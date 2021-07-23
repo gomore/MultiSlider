@@ -5,7 +5,6 @@
 //  Created by Yonat Sharon on 20.05.2018.
 //
 
-import SweeterSwift
 import UIKit
 
 extension CGFloat {

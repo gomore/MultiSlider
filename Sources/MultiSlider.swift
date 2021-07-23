@@ -6,8 +6,6 @@
 //  Copyright © 2016 Yonat Sharon. All rights reserved.
 //
 
-import AvailableHapticFeedback
-import SweeterSwift
 import UIKit
 
 @IBDesignable
