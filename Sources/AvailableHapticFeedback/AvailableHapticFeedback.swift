@@ -21,21 +21,26 @@ open class AvailableHapticFeedback {
     }
 
     open func prepare() {
+#if os(iOS)
         if #available(iOS 10.0, *) {
             feedbackGenerator.prepare()
         }
+#endif
     }
 
     open func generateFeedback() {
+#if os(iOS)
         if #available(iOS 10.0, *) {
             feedbackGenerator.generate(style: style)
         }
+#endif
     }
 
     open func end() {
         _anyFeedbackGenerator = nil
     }
 
+#if os(iOS)
     @available(iOS 10.0, *)
     var feedbackGenerator: UIFeedbackGenerator & AvailableHapticFeedbackGenerator {
         if nil == _anyFeedbackGenerator {
@@ -45,11 +50,13 @@ open class AvailableHapticFeedback {
         return _anyFeedbackGenerator! as! UIFeedbackGenerator & AvailableHapticFeedbackGenerator
         // swiftlint:enable force_cast force_unwrapping
     }
+#endif
 
     private var _anyFeedbackGenerator: Any?
 
     @available(iOS 10.0, *)
     private func createFeedbackGenerator() {
+        #if os(iOS)
         switch style {
         case .selection:
             _anyFeedbackGenerator = UISelectionFeedbackGenerator()
@@ -62,6 +69,7 @@ open class AvailableHapticFeedback {
         case .notificationSuccess, .notificationWarning, .notificationError:
             _anyFeedbackGenerator = UINotificationFeedbackGenerator()
         }
+        #endif
     }
 }
 
@@ -69,6 +77,7 @@ protocol AvailableHapticFeedbackGenerator {
     func generate(style: AvailableHapticFeedback.Style)
 }
 
+#if os(iOS)
 @available(iOS 10.0, *)
 extension UISelectionFeedbackGenerator: AvailableHapticFeedbackGenerator {
     func generate(style: AvailableHapticFeedback.Style) {
@@ -98,3 +107,4 @@ extension UINotificationFeedbackGenerator: AvailableHapticFeedbackGenerator {
         notificationOccurred(notificationFeedbackType)
     }
 }
+#endif
